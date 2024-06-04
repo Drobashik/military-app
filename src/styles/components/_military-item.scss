@@ -1,0 +1,90 @@
+$image-width: 300px;
+
+.military-item {
+  @include font;
+
+  display: grid;
+
+  gap: var(--space-4);
+  margin: var(--space-4) var(--space-8);
+
+  grid-template-columns: $image-width 1fr 0.25fr;
+  grid-template-areas:
+    "image name control"
+    "image description control"
+    "image description control";
+
+  box-shadow: 1px 1px 10px #000000;
+  border-radius: var(--border-radius-xs);
+
+  &_image {
+    max-width: $image-width;
+
+    grid-area: image;
+  }
+
+  &_name {
+    @include font(lead, 500, 1.75rem);
+
+    grid-area: name;
+    margin-top: var(--space-2);
+  }
+
+  &_description {
+    @include font(base, 400, 1.25rem);
+
+    grid-area: description;
+    margin-bottom: var(--space-2);
+  }
+
+  &_control {
+    @include flex(space-evenly, flex-end, column);
+
+    grid-area: control;
+
+    margin-right: var(--space-4);
+    margin-bottom: var(--space-2);
+
+    & > button {
+      width: 100%;
+    }
+  }
+
+  .military-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    border-radius: var(--border-radius-xs) 0 0 var(--border-radius-xs);
+  }
+}
+
+.military-description {
+  @include flex(flex-start, flex-start, column);
+  @include font(lead, 400, 1rem);
+
+  gap: var(--space-4);
+
+  span {
+    @include font(lead, 500, 1.25rem);
+  }
+
+  .total,
+  .quantity {
+    @include font(lead, 500, 1.5rem);
+  }
+
+  & > div {
+    @include flex;
+
+    gap: var(--space-2);
+  }
+}
+
+.military-change-button {
+  width: 100%;
+
+  & > button {
+    width: 100%;
+  }
+}

@@ -1,0 +1,18 @@
+.input-text {
+  @include font(base, 400, 1rem);
+  @include flex(center, flex-start, column);
+
+  cursor: pointer;
+
+  width: 100%;
+
+  &_input {
+    border: 1px solid #cacaca;
+    border-radius: var(--border-radius-xs);
+
+    padding: var(--space-3) var(--space-4);
+    margin-top: var(--space-1);
+
+    width: 100%;
+  }
+}

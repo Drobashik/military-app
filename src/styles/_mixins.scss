@@ -1,0 +1,23 @@
+$fonts: (
+  base: "Roboto",
+  lead: "Archivo Black",
+);
+
+@function font-map($name) {
+  @return map-get($map: $fonts, $key: $name);
+}
+
+@mixin font($font: base, $weight: 400, $size: 1rem) {
+  font-family: font-map($font), "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: $weight;
+  font-size: $size;
+}
+
+@mixin flex($justify: center, $align: center, $direction: row) {
+  display: flex;
+
+  flex-direction: $direction;
+
+  justify-content: $justify;
+  align-items: $align;
+}

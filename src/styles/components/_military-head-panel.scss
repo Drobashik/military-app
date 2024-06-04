@@ -1,0 +1,28 @@
+.military-head-panel {
+  @include flex(space-between, center);
+
+  position: sticky;
+  top: 0;
+
+  padding: var(--space-4) var(--space-8);
+  margin-top: 0;
+
+  border-bottom: 1px solid #bcbcbc;
+
+  color: white;
+  background-color: black;
+
+  &_total {
+    @include font(base, 600, 1.25rem);
+  }
+
+  &_add {
+    @include font(base, 400, 1rem);
+  }
+}
+
+.total-balance {
+  @include flex(center, flex-start, column);
+
+  gap: var(--space-4);
+}
