@@ -1,21 +1,19 @@
-import { FunctionComponent, useContext, useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { Button } from "../shared/Button";
 import { MilitaryFormDialog } from "../MilitaryFormDialog";
 import { MilitaryType } from "../../models/types/Military.type";
 import { Dialog } from "../shared/Dialog";
-import { MilitaryContext } from "../../context/military-context";
-import { updateMilitaryInLocalStorage } from "../../helpers";
 
 type Props = {
   military: MilitaryType;
+  onMilitaryChange: (military: MilitaryType) => void;
 };
 
 export const MilitaryChangeButton: FunctionComponent<Props> = ({
   military,
+  onMilitaryChange,
 }) => {
   const [isOpen, setOpen] = useState(false);
-
-  const { setMilitaries } = useContext(MilitaryContext) ?? {};
 
   const handleOpen = () => {
     setOpen(true);
@@ -23,18 +21,6 @@ export const MilitaryChangeButton: FunctionComponent<Props> = ({
 
   const handleClose = () => {
     setOpen(false);
-  };
-
-  const handleMilitaryChange = (changedMilitary: MilitaryType) => {
-    setMilitaries?.((prev) => {
-      const index = prev.findIndex((item) => item.name === military.name);
-
-      prev[index] = changedMilitary;
-
-      updateMilitaryInLocalStorage(prev);
-
-      return [...prev];
-    });
   };
 
   return (
@@ -48,9 +34,9 @@ export const MilitaryChangeButton: FunctionComponent<Props> = ({
       >
         <MilitaryFormDialog
           submitLabel="Change"
-          militaryInitial={military}
-          onMilitaryChange={handleMilitaryChange}
           onClose={handleClose}
+          onMilitariesSubmit={onMilitaryChange}
+          militaryInitial={military}
         />
       </Dialog>
     </div>

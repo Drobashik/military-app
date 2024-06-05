@@ -1,6 +1,6 @@
 import { FunctionComponent } from "react";
 import { TotalBalance } from "./TotalBalance";
-import { ShowFormButton } from "./ShowFormButton";
+import { MilitaryAddButton } from "./MilitaryAddButton";
 
 export const MilitaryHeadPanel: FunctionComponent = () => {
   return (
@@ -9,7 +9,7 @@ export const MilitaryHeadPanel: FunctionComponent = () => {
         <TotalBalance />
       </div>
       <div className="military-head-panel_add">
-        <ShowFormButton />
+        <MilitaryAddButton />
       </div>
     </div>
   );

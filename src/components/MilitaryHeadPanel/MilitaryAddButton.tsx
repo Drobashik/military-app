@@ -3,10 +3,9 @@ import { Button } from "../shared/Button";
 import { Dialog } from "../shared/Dialog";
 import { MilitaryFormDialog } from "../MilitaryFormDialog";
 import { MilitaryContext } from "../../context/military-context";
-import { updateMilitaryInLocalStorage } from "../../helpers";
 import { MilitaryType } from "../../models/types/Military.type";
 
-export const ShowFormButton: FunctionComponent = () => {
+export const MilitaryAddButton: FunctionComponent = () => {
   const [isOpen, setOpen] = useState(false);
 
   const { setMilitaries } = useContext(MilitaryContext) ?? {};
@@ -19,19 +18,13 @@ export const ShowFormButton: FunctionComponent = () => {
     setOpen(false);
   };
 
-  const handleMilitaryChange = (military: MilitaryType) => {
-    setMilitaries?.((prev) => {
-      const militaries = [...prev, military];
-
-      updateMilitaryInLocalStorage(militaries);
-
-      return militaries;
-    });
+  const handleMilitaryAdd = (military: MilitaryType) => {
+    setMilitaries?.((prev) => [...prev, military]);
   };
 
   return (
     <div className="show-form-button">
-      <Button onClick={handleOpen}>Add military equipment</Button>
+      <Button onClick={handleOpen}>Add equipment</Button>
 
       <Dialog
         title="Add military equipment"
@@ -40,8 +33,15 @@ export const ShowFormButton: FunctionComponent = () => {
       >
         <MilitaryFormDialog
           submitLabel="Add"
-          onMilitaryChange={handleMilitaryChange}
+          onMilitariesSubmit={handleMilitaryAdd}
           onClose={handleClose}
+          militaryInitial={{
+            image: "",
+            name: "",
+            price: 0,
+            quantity: 0,
+            total: 0,
+          }}
         />
       </Dialog>
     </div>

@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  FormEvent,
-  FunctionComponent,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, FunctionComponent, useState } from "react";
 import { Button } from "../shared/Button";
 import { Icon } from "../shared/Icon";
 import { InputText } from "../shared/Input";
@@ -13,66 +7,56 @@ import { formatPrice } from "../../helpers";
 import { MilitaryType } from "../../models/types/Military.type";
 
 type Props = {
-  militaryInitial?: MilitaryType;
+  militaryInitial: MilitaryType;
   submitLabel: string;
   onClose: () => void;
-  onMilitaryChange: (military: MilitaryType) => void;
+  onMilitariesSubmit: (military: MilitaryType) => void;
 };
 
 export const MilitaryFormDialog: FunctionComponent<Props> = ({
   onClose,
-  onMilitaryChange,
+  onMilitariesSubmit,
   submitLabel,
-  militaryInitial = {
-    image: "",
-    name: "",
-    price: 0,
-    quantity: 0,
-    total: 0,
-  },
+  militaryInitial,
 }) => {
   const [military, setMilitary] = useState(militaryInitial);
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    let value: string | number = "";
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setMilitary((prev) => {
+      const changedMilitary = {
+        ...prev,
+        [event.target.name]:
+          event.target.id === "digit"
+            ? Number(event.target.value.replace(/\D/g, ""))
+            : event.target.value,
+      };
 
-    switch (event.target.id) {
-      case "digit":
-        value = Number(event.target.value.replace(/\D/g, ""));
-        break;
-      default:
-        value = event.target.value;
-    }
-
-    setMilitary((prev) => ({
-      ...prev,
-      [event.target.name]: value,
-    }));
+      return {
+        ...changedMilitary,
+        total: changedMilitary.price * changedMilitary.quantity,
+      };
+    });
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    onMilitaryChange(military);
+    onMilitariesSubmit(military);
 
-    setMilitary(militaryInitial);
+    if (Object.values(militaryInitial).every((value) => !value)) {
+      setMilitary(militaryInitial);
+    }
 
     onClose();
   };
 
-  const handleCancel = () => {
+  const handleCancel = (event: FormEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
     onClose();
   };
 
   const debouncedSrc = useDebounce(military.image, 1000);
-
-  useEffect(() => {
-    setMilitary(militaryInitial);
-  }, [...Object.values(militaryInitial)]);
-
-  useEffect(() => {
-    setMilitary((prev) => ({ ...prev, total: prev.price * prev.quantity }));
-  }, [military.price, military.quantity]);
 
   return (
     <form className="military-form-dialog" onSubmit={handleSubmit}>
@@ -80,16 +64,16 @@ export const MilitaryFormDialog: FunctionComponent<Props> = ({
         <Icon isLabel src={debouncedSrc} />
         <div className="military-form-dialog_fields">
           <InputText
-            labelText="Image"
-            name="image"
-            value={military.image}
-            onChange={handleChange}
-          />
-          <InputText
             labelText="Name"
             name="name"
             value={military.name}
-            onChange={handleChange}
+            onChange={handleInputChange}
+          />
+          <InputText
+            labelText="Image"
+            name="image"
+            value={military.image}
+            onChange={handleInputChange}
           />
           <div className="military-form-dialog_pricing-details">
             <InputText
@@ -97,14 +81,14 @@ export const MilitaryFormDialog: FunctionComponent<Props> = ({
               name="price"
               id="digit"
               value={formatPrice(military.price)}
-              onChange={handleChange}
+              onChange={handleInputChange}
             />
             <InputText
               labelText="Quantity"
               name="quantity"
               id="digit"
               value={military.quantity}
-              onChange={handleChange}
+              onChange={handleInputChange}
             />
           </div>
         </div>

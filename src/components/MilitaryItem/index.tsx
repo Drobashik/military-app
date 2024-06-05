@@ -3,7 +3,6 @@ import { MilitaryDescription } from "./MilitaryDescription";
 import { Button } from "../shared/Button";
 import { MilitaryType } from "../../models/types/Military.type";
 import { MilitaryContext } from "../../context/military-context";
-import { updateMilitaryInLocalStorage } from "../../helpers";
 import { MilitaryChangeButton } from "./MilitaryChangeButton";
 
 type Props = MilitaryType;
@@ -16,13 +15,15 @@ export const MilitaryItem: FunctionComponent<Props> = ({
   const { setMilitaries } = useContext(MilitaryContext) ?? {};
 
   const handleRemove = () => {
-    setMilitaries?.((prev) => {
-      const filtered = prev.filter((military) => military.name !== name);
+    setMilitaries?.((prev) =>
+      prev.filter((military) => military.name !== name)
+    );
+  };
 
-      updateMilitaryInLocalStorage(filtered);
-
-      return filtered;
-    });
+  const handleChange = (changedMilitary: MilitaryType) => {
+    setMilitaries?.((prev) =>
+      prev.map((item) => (item.name === name ? changedMilitary : item))
+    );
   };
 
   return (
@@ -37,7 +38,10 @@ export const MilitaryItem: FunctionComponent<Props> = ({
         <MilitaryDescription {...restProps} />
       </div>
       <div className="military-item_control">
-        <MilitaryChangeButton military={{ name, image, ...restProps }} />
+        <MilitaryChangeButton
+          military={{ name, image, ...restProps }}
+          onMilitaryChange={handleChange}
+        />
         <Button onClick={handleRemove}>Remove</Button>
       </div>
     </div>

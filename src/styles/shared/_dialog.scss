@@ -57,6 +57,10 @@ $dialog-min-width: 40rem;
 
     margin-left: var(--space-2);
     gap: var(--space-5);
+
+    padding-bottom: var(--space-4);
+
+    border-bottom: 1px solid #cbcbcb;
   }
 
   &_cross {
@@ -68,8 +72,10 @@ $dialog-min-width: 40rem;
 
     padding: var(--space-2);
 
-    width: $cross-size;
-    height: $cross-size;
+    min-height: unset;
+
+    max-width: $cross-size;
+    max-height: $cross-size;
 
     &:hover {
       background: #e0e0e0;
